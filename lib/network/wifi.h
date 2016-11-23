@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 
-const char* network_ssid = "Braquiara Power Extensor";
-const char* network_password = "<SSID>";
+const char* network_ssid = "<SSID>";
+const char* network_password = "<PASSWORD>";
 const char* network_ssid_ap = "Rede NodeMCU";
 
 // config static IP
