@@ -12,5 +12,4 @@ void feed_fish() {
   servo.write(30);
   delay(5000);
   servo.write(110);
-  delay(10000);
 }
