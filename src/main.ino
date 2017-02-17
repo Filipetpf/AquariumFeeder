@@ -1,4 +1,5 @@
 #include <wifi.h>
+#include <message_client.h>
 #include <fish_feeder.h>
 
 void setup() {
@@ -9,4 +10,5 @@ void setup() {
 void loop() {
   connectWifi();
   feed_fish();
+  send_message("The swiming creatures has been feed");
 }

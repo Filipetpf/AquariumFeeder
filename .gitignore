@@ -26,3 +26,5 @@
 *.out
 *.app
 .piolibdeps
+.travis.yml
+/lib/readme.txt
