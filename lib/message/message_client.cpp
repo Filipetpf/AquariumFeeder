@@ -1,8 +1,11 @@
 #include "RestClient.h"
 #include <ArduinoJson.h>
+#include <fish_feeder.cpp>
+#include <stdlib.h>
+#include <string.h>
 
 char post_body[] = "{}";
-RestClient client = RestClient("<SERVER>");
+RestClient client = RestClient("<HOST>");
 
 int send_message(char * message) {
   char endpoint[100];
@@ -12,7 +15,7 @@ int send_message(char * message) {
   return client.post(endpoint, post_body);
 }
 
-void get_messages(char** messages) {
+int check_feed_schedule() {
   String json;
   client.get("/messages", &json);
 
@@ -23,13 +26,19 @@ void get_messages(char** messages) {
     Serial.println("parseObject() failed");
   }
 
-  messages = (char**) malloc( sizeof(root["messages"]) * sizeof(char*));
+  int size = root["size"];
 
   int i;
-  for(i = 0; i < sizeof(root["messages"]); i++) {
+  for(i = 0; i < size; i++) {
     const char* message = root["messages"][i];
-    if(sizeof(message) > 0) {
-      messages[i] = (char*) message;
+    char *feed = strstr(message, "feed");
+    char *fish = strstr(message, "fish");
+    if(feed != NULL && fish != NULL) {
+      Serial.println(message);
+      feed_fish();
+      send_message("The swiming creatures has been feed");
     }
   }
+
+  return size;
 }
