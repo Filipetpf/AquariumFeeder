@@ -2,8 +2,10 @@
 
 RestClient client = RestClient(GATEWAY_ADDRESS, 443, GATEWAY_SSL_FINGERPRINT);
 
-int send_message(char * message) {
+int send_message(char * message, char * user_id) {
   char endpoint[100];
+  strcpy(endpoint, "/user/");
+  strcat(endpoint, user_id);
   strcpy(endpoint, "/messages/");
   strcat(endpoint, message);
 
@@ -28,6 +30,6 @@ void process_message(JsonObject& root) {
 
   for(int i = 0; i < command_count; i++) {
       feed_fish();
-      send_message((char*) "The swiming creatures has been feed");
+      send_message((char*) "The swiming creatures has been feed", root["messages"][i]["user_id"]);
   }
 }
