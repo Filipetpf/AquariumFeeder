@@ -5,7 +5,7 @@
 #include <string.h>
 
 char post_body[] = "{}";
-RestClient client = RestClient("<HOST>");
+RestClient client = RestClient("<HOST>", 443, "<FINGERPRINT>");
 
 int send_message(char * message) {
   char endpoint[100];
@@ -33,8 +33,8 @@ int check_feed_schedule() {
     const char* message = root["messages"][i];
     char *feed = strstr(message, "feed");
     char *fish = strstr(message, "fish");
+    Serial.println(message);
     if(feed != NULL && fish != NULL) {
-      Serial.println(message);
       feed_fish();
       send_message("The swiming creatures has been feed");
     }
