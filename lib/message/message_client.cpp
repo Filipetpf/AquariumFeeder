@@ -1,9 +1,4 @@
-#include "RestClient.h"
-#include <ArduinoJson.h>
-#include <fish_feeder.cpp>
-#include <stdlib.h>
-#include <string.h>
-#include <config.h>
+#include <message_client.h>
 
 RestClient client = RestClient(GATEWAY_ADDRESS, 443, GATEWAY_SSL_FINGERPRINT);
 
@@ -15,26 +10,19 @@ int send_message(char * message) {
   return client.post(endpoint, "{}");
 }
 
-int check_feed_schedule() {
+void check_messages(void) {
   String json;
-  client.get("/messages", &json);
+  client.get("/messages?commands=feed,fish", &json);
 
   StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.parseObject(json);
+  process_message(jsonBuffer.parseObject(json));
+}
 
-  int size = root["size"];
-  int i;
+void process_message(JsonObject& root) {
+  int command_count = root["size"];
 
-  for(i = 0; i < size; i++) {
-    const char* message = root["messages"][i];
-    char *feed = strstr(message, "feed");
-    char *fish = strstr(message, "fish");
-    Serial.println(message);
-    if(feed != NULL && fish != NULL) {
+  for(int i = 0; i < command_count; i++) {
       feed_fish();
-      send_message((char*)"The swiming creatures has been feed");
-    }
+      send_message((char*) "The swiming creatures has been feed");
   }
-
-  return size;
 }

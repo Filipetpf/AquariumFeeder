@@ -8,5 +8,5 @@ void setup() {
 
 void loop() {
   connectWifi();
-  check_feed_schedule();
+  check_messages();
 }
