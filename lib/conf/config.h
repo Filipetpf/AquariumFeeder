@@ -3,3 +3,5 @@
 
 #define NETWORK_SSID "<NETWORK_SSID>"
 #define NETWORK_PASSWORD "<NETWORK_PASSWORD>"
+
+#define ALLOWED_USERS "&users=<USER>"

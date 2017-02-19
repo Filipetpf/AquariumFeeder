@@ -11,8 +11,13 @@ int send_message(char * message) {
 }
 
 void check_messages(void) {
+  char endpoint[100];
+  strcpy(endpoint, "/messages?");
+  strcat(endpoint, "commands=feed&commands=fish");
+  strcat(endpoint, ALLOWED_USERS);
+
   String json;
-  client.get("/messages?commands=feed,fish", &json);
+  client.get(endpoint, &json);
 
   StaticJsonBuffer<200> jsonBuffer;
   process_message(jsonBuffer.parseObject(json));
