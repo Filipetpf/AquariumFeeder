@@ -27,9 +27,9 @@ void check_messages(void) {
 
 void process_message(JsonObject& root) {
   int command_count = root["size"];
-
   for(int i = 0; i < command_count; i++) {
       feed_fish();
-      send_message((char*) "The swiming creatures has been feed", root["messages"][i]["user_id"]);
+      const char* user_id = root["messages"][i]["user_id"];
+      send_message((char*) "The swiming creatures has been feed", (char*) user_id);
   }
 }
