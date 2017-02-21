@@ -10,6 +10,8 @@ int send_message(char * message, char * user_id, char * bot_id) {
   strcat(endpoint, user_id);
   strcat(endpoint, "/messages/");
   strcat(endpoint, message);
+  strcat(endpoint, "?token=");
+  strcat(endpoint, AUTH_TOKEN);
 
   return client.post(endpoint, "{}");
 }
@@ -19,6 +21,8 @@ void check_messages(void) {
   strcpy(endpoint, "/messages?");
   strcat(endpoint, COMMANDS);
   strcat(endpoint, ALLOWED_USERS);
+  strcat(endpoint, "&token=");
+  strcat(endpoint, AUTH_TOKEN);
 
   String json;
   int status = client.get(endpoint, &json);
