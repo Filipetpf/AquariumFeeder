@@ -4,7 +4,7 @@
 #include <config.h>
 
 
-int send_message(char * message);
+int send_message(char * message, char * user_id, char * bot_id);
 
 void check_messages(void);
 
