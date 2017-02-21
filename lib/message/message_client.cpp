@@ -6,12 +6,10 @@ int send_message(char * message, char * user_id, char * bot_id) {
   char endpoint[100];
   strcpy(endpoint, "/from/");
   strcat(endpoint, bot_id);
-  strcpy(endpoint, "/to/");
+  strcat(endpoint, "/to/");
   strcat(endpoint, user_id);
-  strcpy(endpoint, "/messages/");
+  strcat(endpoint, "/messages/");
   strcat(endpoint, message);
-
-  Serial.println(endpoint);
 
   return client.post(endpoint, "{}");
 }
@@ -26,18 +24,26 @@ void check_messages(void) {
   int status = client.get(endpoint, &json);
 
   if(status == 200) {
-    StaticJsonBuffer<200> jsonBuffer;
-    process_message(jsonBuffer.parseObject(json));
+    process_message(json);
   }
 }
 
-void process_message(JsonObject& root) {
-  int command_count = root["size"];
-  Serial.println(command_count);
+void process_message(String json) {
+
+  int str_len = json.length() + 1;
+  char json_char_array[str_len];
+  json.toCharArray(json_char_array, str_len);
+
+  aJsonObject* root = aJson.parse(json_char_array);
+
+  int command_count = aJson.getObjectItem(root, "size")->valueint;
+  aJsonObject* messages = aJson.getObjectItem(root, "messages");
+
   for(int i = 0; i < command_count; i++) {
       feed_fish();
-      const char* user_id = root["messages"][i]["user_id"];
-      const char* bot_id = root["messages"][i]["bot_id"];
+      aJsonObject* message = aJson.getArrayItem(messages, i);
+      const char* user_id = aJson.getObjectItem(message, "user_id")->valuestring;
+      const char* bot_id = aJson.getObjectItem(message, "bot_id")->valuestring;
 
       send_message((char*) "The swiming creatures has been feed", (char*) user_id, (char*) bot_id);
   }
