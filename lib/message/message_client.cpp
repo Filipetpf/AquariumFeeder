@@ -40,11 +40,11 @@ void process_message(String json) {
   aJsonObject* messages = aJson.getObjectItem(root, "messages");
 
   for(int i = 0; i < command_count; i++) {
-      feed_fish();
+      open_door();
       aJsonObject* message = aJson.getArrayItem(messages, i);
       const char* user_id = aJson.getObjectItem(message, "user_id")->valuestring;
       const char* bot_id = aJson.getObjectItem(message, "bot_id")->valuestring;
 
-      send_message((char*) "The swiming creatures has been feed", (char*) user_id, (char*) bot_id);
+      send_message((char*) "The Door is open", (char*) user_id, (char*) bot_id);
   }
 }
