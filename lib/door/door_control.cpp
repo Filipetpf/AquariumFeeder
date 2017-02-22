@@ -3,11 +3,11 @@
 
 void setup_door(void) {
   pinMode(DOOR_PIN, OUTPUT);
-  digitalWrite(DOOR_PIN, LOW);
+  digitalWrite(DOOR_PIN, HIGH);
 }
 
 void open_door(void) {
   digitalWrite(DOOR_PIN, LOW);
-  delay(1000);  
+  delay(1000);
   digitalWrite(DOOR_PIN, HIGH);
 }
